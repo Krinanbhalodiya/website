@@ -1,36 +1,52 @@
-import cookieParser from "cookie-parser";
-import jwt from 'jsonwebtoken';
-import UserModel from '../models/user.js';
+import  jwt from 'jsonwebtoken'
+import UserModel from '../models/user.js'
 
-const isAdmin = async (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) {
-      // Respond with a clear message when token is missing
-      return res.status(401).json({ message: "Authentication token is missing." });
+
+const isAdmin=async(req,res,next)=>{
+    try {
+         const token=req.cookies.token
+         if (!token) {
+            return res.status(401).json({messsage:"'Unauthorized: No token provided'"})
+         }
+
+         const decoded= jwt.verify(token,process.env.JWT_SECRETE)
+         const user=await UserModel.findById(decoded.userId)
+         if (!user) {
+            return res.status(401).json({messsage:"'user not found'"})
+         }
+
+         if (user.role !=='admin') {
+            return res.status(403).json({messsage:'Unauthorized: User is not an admin'})
+         }
+       req.user=user
+         next()
+      
+    } catch (error) {
+        console.log(error)
     }
+}
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure the environment variable is correct
-    const user = await UserModel.findById(decoded.userId);
+const IsUser=async(req,res,next)=>{
+   try {
+      const token=req.cookies.token
+      if (!token) {
+         return res.status(401).json({messsage:"'Unauthorized: No token provided'"})
+      }
 
-    if (!user) {
-      // Respond when user is not found in the database
-      return res.status(401).json({ message: "User not found. Please authenticate." });
-    }
+      const decoded= jwt.verify(token,process.env.JWT_SECRETE)
+      const user=await UserModel.findById(decoded.userId)
+      if (!user) {
+         return res.status(401).json({messsage:"'user not found'"})
+      }
 
-    if (user.role !== "admin") {
-      // Respond when the user does not have admin privileges
-      return res.status(403).json({ message: "Access denied. Admin privileges required." });
-    }
+    
+    req.user=user
+      next()
+   
+ } catch (error) {
+     console.log(error)
+ }
+}
 
-    req.user = user; 
-    app.use(cookieParser());
-    // Attach user to the request object
-    next(); // Proceed to the next middleware or route handler
-  } catch (error) {
-    console.error("Error in isAdmin middleware:", error.message);
-    res.status(500).json({ message: "Internal server error." });
-  }
-};
 
-export { isAdmin };
+export {isAdmin,IsUser}
