@@ -1,5 +1,0 @@
-PORT=5001
-MONGODB_URL=mongodb+srv://KrinaBhalodiya:krina22030401020@cluster0.lmttp.mongodb.net/Role
-JWT_SECRETE=THIS IS SECRETE
-
-
