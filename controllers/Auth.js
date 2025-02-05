@@ -264,20 +264,16 @@ const Login=async(req,res)=>{
             });
             
             
-                await sendEmail(email, "Password Reset OTP", `
-            <p>Your OTP for password reset is:</p>
-            <h2>${otp}</h2>
-            <p>This OTP is valid for 5 minutes.</p>
-        `);
+        
     
-            transporter.sendMail(mailOptions, (error) => {
-                if (error) {
-                    console.error("Email sending error:", error);
-                    return res.status(500).json({ success: false, message: "Failed to send OTP email", error });
-                }
-                console.log(`OTP sent to ${email}`);
-                res.status(200).json({ success: true, message: "OTP sent to your email." });
-            });
+            // transporter.sendMail(mailOptions, (error) => {
+            //     if (error) {
+            //         console.error("Email sending error:", error);
+            //         return res.status(500).json({ success: false, message: "Failed to send OTP email", error });
+            //     }
+            //     console.log(`OTP sent to ${email}`);
+            //     res.status(200).json({ success: true, message: "OTP sent to your email." });
+            // });
     
         } catch (error) {
             console.log("Error:", error);
