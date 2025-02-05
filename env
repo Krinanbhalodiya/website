@@ -1,10 +1,5 @@
 PORT=5001
 MONGODB_URL=mongodb+srv://KrinaBhalodiya:krina22030401020@cluster0.lmttp.mongodb.net/Role
 JWT_SECRETE=THIS IS SECRETE
-EMAIL_USER=krinanbhalodiya@gmail.com
-EMAIL_PASS=dwvg wtoe wtxf rzks
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
 
 
